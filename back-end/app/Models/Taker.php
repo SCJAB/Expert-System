@@ -16,4 +16,9 @@ class Taker extends Model
         'email',
         'password'
     ];
+
+    public function diagnoses()
+    {
+        return $this->hasMany(Diagnosis::class, 'taker');
+    }
 }

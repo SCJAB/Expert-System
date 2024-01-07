@@ -19,7 +19,7 @@ class TakerController extends Controller
                 'takers' => 'No Takers Found'
             ]);
         }
-        
+         
     }
 
     public function create(Request $request) 
@@ -125,7 +125,8 @@ class TakerController extends Controller
         }
     }
 
-    public function delete($id) {
+    public function delete($id) 
+    {
         $taker = Taker::find($id);
 
         if ($taker) {
