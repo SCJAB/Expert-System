@@ -5,18 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Diagnosis extends Model
+class Question extends Model
 {
     use HasFactory;
-     
+
     protected $fillable = [
-        'takerID', 
-        'score', 
-        'depression_level'
+        'adminID',
+        'question'
     ];
 
-    public function taker()
+    public function user()
     {
-        return $this->belongsTo(Taker::class, 'taker');
+        return $this->belongsTo(Admin::class, 'admin');
     }
 }

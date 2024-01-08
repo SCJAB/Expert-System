@@ -2,24 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Taker;
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class TakerController extends Controller
+class AdminController extends Controller
 {
     public function index() 
     {
-        $takers = Taker::all();
+        $admins = Admin::all();
 
-        if ($takers->count() > 0) {
-            return response()->json(['takers' => $takers]);
+        if ($admins->count() > 0) {
+            return response()->json(['admins' => $admins]);
         } else {
             return response()->json([
-                'takers' => 'No Takers Found'
+                'admins' => 'No Admins Found'
             ]);
         }
-         
     }
 
     public function create(Request $request) 
@@ -28,7 +27,7 @@ class TakerController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'age' => 'required|numeric|min:1',
-            'email' => 'required|email|max:255|unique:takers',
+            'email' => 'required|email|max:255|unique:admins',
             'password' => 'required|min:8|string|max:255|'
         ]);
 
@@ -37,7 +36,7 @@ class TakerController extends Controller
                 'error' => $validator->messages()
             ]);
         } else {
-            $taker = Taker::create([
+            $admin = Admin::create([
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
                 'age' => $request->age,
@@ -45,9 +44,9 @@ class TakerController extends Controller
                 'password' => $request->password
             ]);
 
-            if ($taker) {
+            if ($admin) {
                 return response()->json([
-                    'message' => 'Taker Created Successfully'
+                    'message' => 'Admin Created Successfully'
                 ]);
             } else {
                 return response()->json([
@@ -59,15 +58,15 @@ class TakerController extends Controller
 
     public function read($id) 
     {
-        $taker = Taker::find($id);
+        $admin = Admin::find($id);
 
-        if ($taker) {
+        if ($admin) {
             return response()->json([
-                'taker' => $taker
+                'admin' => $admin
             ]);
         } else {
             return response()->json([
-                'message' => 'Taker Not Found'
+                'message' => 'Admin Not Found'
             ]);
         }
     }
@@ -102,11 +101,11 @@ class TakerController extends Controller
                 'error' => $validator->messages()
             ]);
         } else {
-            $taker = Taker::find($id);
+            $admin = Admin::find($id);
 
-            if ($taker) {
+            if ($admin) {
 
-                $taker->update([
+                $admin->update([
                     'first_name' => $request->first_name,
                     'last_name' => $request->last_name,
                     'age' => $request->age,
@@ -115,11 +114,11 @@ class TakerController extends Controller
                 ]);
 
                 return response()->json([
-                    'message' => 'Taker Updated Successfully'
+                    'message' => 'Admin Updated Successfully'
                 ]);
             } else {
                 return response()->json([
-                    'message' => 'Taker Not Found'
+                    'message' => 'Admin Not Found'
                 ]);
             }               
         }
@@ -127,17 +126,17 @@ class TakerController extends Controller
 
     public function delete($id) 
     {
-        $taker = Taker::find($id);
+        $admin = Admin::find($id);
 
-        if ($taker) {
-            $taker->delete();
+        if ($admin) {
+            $admin->delete();
 
             return response()->json([
-                'message' => 'Taker Deleted Successfully'
+                'message' => 'Admin Deleted Successfully'
             ]);
         } else {
             return response()->json([
-                'message' => 'Taker Not Found'
+                'message' => 'Admin Not Found'
             ]);
         }
     }
