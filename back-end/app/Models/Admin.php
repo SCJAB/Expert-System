@@ -21,4 +21,9 @@ class Admin extends Model
     {
         return $this->hasMany(Question::class, 'question');
     }
+
+    public function options()
+    {
+        return $this->hasMany(Option::class, 'option');
+    }
 }

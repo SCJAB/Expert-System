@@ -5,13 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Question extends Model
+class Option extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'adminID',
-        'question'
+        'questionID',
+        'option',
+        'score'
     ];
 
     public function admins()
@@ -19,8 +21,9 @@ class Question extends Model
         return $this->belongsTo(Admin::class, 'admin');
     }
 
-    public function options()
+    public function questions()
     {
-        return $this->hasMany(Option::class, 'option');
+        return $this->belongsTo(Question::class, 'question');
     }
+
 }

@@ -65,7 +65,7 @@ class QuestionController extends Controller
 
         if ($question) {
             return response()->json([
-                'admin' => $question
+                'question' => $question
             ]);
         } else {
             return response()->json([
@@ -113,19 +113,27 @@ class QuestionController extends Controller
         }
     }
 
-    public function delete($id) 
+    public function delete($q_id, $a_id) 
     {
-        $question = Question::find($id);
+        $admin = Admin::find($a_id);
 
-        if ($question) {
-            $question->delete();
+        if ($admin) {
+            $question = Question::find($q_id);
 
-            return response()->json([
-                'message' => 'Question Deleted Successfully'
-            ]);
+            if ($question) {
+                $question->delete();
+
+                return response()->json([
+                    'message' => 'Question Deleted Successfully'
+                ]);
+            } else {
+                return response()->json([
+                    'message' => 'Question Not Found'
+                ]);
+            }
         } else {
             return response()->json([
-                'message' => 'Question Not Found'
+                'message' => 'Admin is Required'
             ]);
         }
     }
