@@ -3,6 +3,7 @@
 use App\Http\Controllers\TakerController;
 use App\Http\Controllers\DiagnosisController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DepressionTypeController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\OptionController;
 use App\Http\Controllers\RelationshipController;
@@ -60,7 +61,14 @@ Route::get('options/{id}', [OptionController::class, 'read']);
 Route::put('options/{o_id}/{a_id}/edit', [OptionController::class, 'update']);
 Route::delete('options/{o_id}/{a_id}/delete', [OptionController::class, 'delete']);
 
+//DepressionTypes
+Route::get('depression-types', [DepressionTypeController::class, 'index']); 
+Route::post('depression-types/{id}', [DepressionTypeController::class, 'create']); 
+Route::get('depression-types/{id}', [DepressionTypeController::class, 'read']);
+Route::put('depression-types/{d_id}/{a_id}/edit', [DepressionTypeController::class, 'update']);
+Route::delete('depression-types/{d_id}/{a_id}/delete', [DepressionTypeController::class, 'delete']);
+
 ////Relationships////
-Route::get('question-option', [RelationshipController::class, 'questionOption']); // display questions with options and scores
-Route::get('admin-question', [RelationshipController::class, 'adminQuestion']); // display questions made by admins
-Route::get('admin-option', [RelationshipController::class, 'adminOption']); // display options made by admins
+Route::get('questions-options', [RelationshipController::class, 'questionOption']); // display questions with options and scores
+Route::get('admins-questions', [RelationshipController::class, 'adminQuestion']); // display questions made by admins
+Route::get('admins-options', [RelationshipController::class, 'adminOption']); // display options made by admins

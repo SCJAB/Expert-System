@@ -92,7 +92,7 @@ class TakerController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'age' => 'required|numeric|min:1',
+            'age' => 'required|numeric|min:10|max:90',
             'email' => 'required|email|max:255',
             'password' => 'required|min:8|string|max:255|'
         ]);

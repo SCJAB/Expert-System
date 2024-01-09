@@ -7,6 +7,7 @@ use App\Models\Question;
 use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class OptionController extends Controller
 {
@@ -35,7 +36,16 @@ class OptionController extends Controller
             $validator = Validator::make($request->all(), [
                 'questionID' => 'required|numeric|min:1',
                 'option' => 'required|string',
-                'score' => 'required|numeric|min:0'
+                'score' => [
+                    'required',
+                    'numeric',
+                    'min:0',
+                    'max:3',
+                    
+                    Rule::unique('options')->where(function ($query) use ($request) {
+                        return $query->where('questionID', $request->questionID);
+                    }),
+                ],
             ]);
     
             if ($validator->fails()) {
@@ -94,7 +104,16 @@ class OptionController extends Controller
         $validator = Validator::make($request->all(), [
             'questionID' => 'required|numeric|min:1',
             'option' => 'required|string',
-            'score' => 'required|numeric|min:0'
+            'score' => [
+                'required',
+                'numeric',
+                'min:0',
+                'max:3',
+                
+                Rule::unique('options')->where(function ($query) use ($request) {
+                    return $query->where('questionID', $request->questionID);
+                }),
+            ],
         ]);
 
         if ($validator->fails()) {

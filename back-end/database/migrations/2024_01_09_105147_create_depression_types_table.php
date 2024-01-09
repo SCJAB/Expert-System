@@ -13,12 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('diagnoses', function (Blueprint $table) {
+        Schema::create('depression_types', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('takerID');
-            $table->foreign('takerID')->references('id')->on('takers')->onDelete('cascade');
-            $table->integer('score');
-            $table->string('depression_level');
+            $table->string('type');
+            $table->integer('scoreRangeStart'); 
+            $table->integer('scoreRangeEnd');
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('diagnoses');
+        Schema::dropIfExists('depression_types');
     }
 };
