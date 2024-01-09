@@ -5,6 +5,7 @@ use App\Http\Controllers\DiagnosisController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\OptionController;
+use App\Http\Controllers\QuestionOptionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+////admin////
 //Takers
 Route::get('takers', [TakerController::class, 'index']);
 Route::post('takers', [TakerController::class, 'create']); //
@@ -58,3 +60,7 @@ Route::post('options/{id}', [OptionController::class, 'create']); //
 Route::get('options/{id}', [OptionController::class, 'read']);
 Route::put('options/{o_id}/{a_id}/edit', [OptionController::class, 'update']);
 Route::delete('options/{o_id}/{a_id}/delete', [OptionController::class, 'delete']);
+
+////clients////
+//Question and Options
+Route::get('question-option', [QuestionOptionController::class, 'index']);
