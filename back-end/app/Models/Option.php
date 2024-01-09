@@ -18,7 +18,7 @@ class Option extends Model
 
     public function admins()
     {
-        return $this->belongsTo(Admin::class, 'admin');
+        return $this->belongsTo(Admin::class, 'adminID');
     }
 
     public function questions()

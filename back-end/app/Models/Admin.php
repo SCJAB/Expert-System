@@ -19,11 +19,11 @@ class Admin extends Model
 
     public function questions()
     {
-        return $this->hasMany(Question::class, 'question');
+        return $this->hasMany(Question::class, 'adminID');
     }
 
     public function options()
     {
-        return $this->hasMany(Option::class, 'option');
+        return $this->hasMany(Option::class, 'adminID');
     }
 }
