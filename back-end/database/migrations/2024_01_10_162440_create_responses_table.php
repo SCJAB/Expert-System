@@ -13,14 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        // Schema::create('diagnoses', function (Blueprint $table) {
+        // Schema::create('responses', function (Blueprint $table) {
         //     $table->id();
         //     $table->unsignedBigInteger('takerID');
         //     $table->foreign('takerID')->references('id')->on('takers')->onDelete('cascade');
         //     $table->unsignedBigInteger('questionID');
         //     $table->foreign('questionID')->references('id')->on('questions')->onDelete('cascade');
-        //     $table->unsignedBigInteger('answerID');
-        //     $table->foreign('answerID')->references('id')->on('options')->onDelete('cascade');
+        //     $table->unsignedBigInteger('answer');
+        //     $table->foreign('answer')->references('id')->on('options')->onDelete('cascade');
         //     $table->timestamps();
         // });
     }

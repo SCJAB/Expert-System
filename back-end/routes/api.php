@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\TakerController;
-use App\Http\Controllers\DiagnosisController;
+use App\Http\Controllers\ResponseController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DepressionTypeController;
 use App\Http\Controllers\QuestionController;
@@ -33,12 +33,6 @@ Route::get('takers/{id}', [TakerController::class, 'read']);
 Route::put('takers/{id}/edit', [TakerController::class, 'update']);
 Route::delete('takers/{id}/delete', [TakerController::class, 'delete']);
 
-//Diagnoses 
-Route::get('diagnoses', [DiagnosisController::class, 'index']);
-Route::post('diagnoses/{id}', [DiagnosisController::class, 'create']); //
-Route::get('diagnoses/{id}', [DiagnosisController::class, 'read']); ////
-Route::delete('diagnoses/{id}/delete', [DiagnosisController::class, 'delete']);
-
 //Admins
 Route::get('admins', [AdminController::class, 'index']);
 Route::post('admins', [AdminController::class, 'create']); 
@@ -67,6 +61,12 @@ Route::post('depression-types/{id}', [DepressionTypeController::class, 'create']
 Route::get('depression-types/{id}', [DepressionTypeController::class, 'read']);
 Route::put('depression-types/{d_id}/{a_id}/edit', [DepressionTypeController::class, 'update']);
 Route::delete('depression-types/{d_id}/{a_id}/delete', [DepressionTypeController::class, 'delete']);
+
+//Responses
+Route::get('responses', [ResponseController::class, 'index']);
+Route::post('responses/{id}', [ResponseController::class, 'create']); //
+Route::get('responses/{id}', [ResponseController::class, 'read']); ////
+Route::delete('responses/{id}/delete', [ResponseController::class, 'delete']);
 
 ////Relationships////
 Route::get('questions-options', [RelationshipController::class, 'questionOption']); // display questions with options and scores

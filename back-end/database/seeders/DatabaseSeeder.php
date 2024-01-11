@@ -18,5 +18,6 @@ class DatabaseSeeder extends Seeder
         $this->call(AdminsTableSeeder::class);
         $this->call(QuestionOptionsTableSeeder::class);
         $this->call(DepressionTypesSeeder::class);
+        // $this->call(ResponseTableSeeder::class);
     }
 }
