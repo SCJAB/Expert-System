@@ -26,6 +26,8 @@ class ResponseController extends Controller
 
     public function create(Request $request, $id)
     {
+        $selectedAnswers = $request->input('selectedAnswers');
+        
         $taker = Taker::find($id);
 
         if (!$taker) {
