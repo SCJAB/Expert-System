@@ -26,4 +26,9 @@ class Option extends Model
         return $this->belongsTo(Question::class, 'questionID');
     }
 
+    public function response()
+    {
+        return $this->belongsTo(Response::class, 'responseID');
+    }
+
 }

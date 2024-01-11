@@ -19,6 +19,6 @@ class Taker extends Model
 
     public function diagnoses()
     {
-        return $this->hasMany(Diagnosis::class, 'taker');
+        return $this->hasMany(Diagnosis::class, 'takerID');
     }
 }
