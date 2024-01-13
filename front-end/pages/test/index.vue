@@ -44,3 +44,17 @@ function submitAnswers() {
   console.log(selectedOptions.value);
 }
 </script>
+
+<!-- <template>
+  <div>
+    <p>Questions</p>
+  </div>
+</template>
+
+<script setup>
+
+</script>
+
+<style lang="scss" scoped>
+
+</style> -->
