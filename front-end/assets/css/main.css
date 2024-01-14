@@ -6,3 +6,23 @@
 ::-webkit-scrollbar {
   display: none;
 }
+
+.bg-image {
+  background-image: url('../img/gloom1.png');
+  background-size: cover;
+  background-position: 300px;
+  background-repeat: no-repeat;
+}
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 2s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+  opacity: 0;
+  }
+  to {
+  opacity: 1;
+  }
+}

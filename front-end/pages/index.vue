@@ -1,15 +1,14 @@
 <template>
-  <div class="bg-[#b9b9b8] h-screen scrollbar-hide">
-    <div class="grid grid-cols-2 border-4 border-red-600 h-screen">
-      <div>
-        <h1>If you feel comfortable, you can take our depression test to know more about yourself.</h1>
-        <nuxt-link to="/test">Get Started</nuxt-link>
+  <div class="bg-[#b9b9b8] scrollbar-hide bg-image h-screen">
+    <div class="fade-in">
+      <div class="mx-4 mt-24 pr-30 md:mx-16 md:mt-32 md:pr-0">
+        <h1 class="md:text-5xl max-w-[38rem] font-bold bg-clip-text text-transparent bg-gradient-to-l from-yellow-600 to-[#864A27] mb-10">If you feel comfortable, you can take our depression test to know more about yourself.</h1>
+        <nuxt-link to="/test" class="md:text-3xl bg-yellow-700 text-white font-bold py-2 px-4 rounded">Get Started</nuxt-link>
 
-        <p>Depression is being colorblind and constantly told how colorful the world is."</p>
-        <p>-Atticus Poetry</p>
-      </div>
-      <div class="border-4 border-red-800">
-        <img class="h-96 border-4 border-cyan-600 bg-cover" src="~/assets/img/gloom2.png">
+        <div class="mt-10">
+          <p class="md:text-lg font-semibold md:mb-5 text-[#99562C] italic">Depression is being colorblind and constantly told how colorful the world is."</p>
+          <p class="text-xs md:text-lg text-[#864A27] font-bold">-Atticus Poetry</p>    
+        </div>
       </div>
     </div>
   </div>
