@@ -25,12 +25,24 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::middleware('auth:sanctum')->get('/send-verify-mail/takers/{email}', [TakerController::class, 'sendVerifyEmail']);
+Route::middleware('auth:sanctum')->get('/send-verify-mail/admins/{email}', [AdminController::class, 'sendVerifyEmail']);
+
 //Takers
-Route::get('takers', [TakerController::class, 'index']);
+Route::middleware(['auth:sanctum','verified'])->get('takers', [TakerController::class, 'index']);
 Route::post('takers', [TakerController::class, 'create']); // create takers
 Route::get('takers/{id}', [TakerController::class, 'read']);
 Route::put('takers/{id}/edit', [TakerController::class, 'update']);
 Route::delete('takers/{id}/delete', [TakerController::class, 'delete']);
+
+//Takers Login
+Route::post('login-takers', [TakerController::class, 'login']);
+Route::middleware('auth:sanctum')->get('taker', [TakerController::class, 'getTaker']);
+Route::middleware('auth:sanctum')->post('logout-takers', [TakerController::class, 'logout']);
+
+Route::post('login-admins', [AdminController::class, 'login']);
+Route::middleware('auth:sanctum')->get('admin', [AdminController::class, 'getTaker']);
+Route::middleware('auth:sanctum')->post('logout-admins', [AdminController::class, 'logout']);
 
 //Admins
 Route::get('admins', [AdminController::class, 'index']);
