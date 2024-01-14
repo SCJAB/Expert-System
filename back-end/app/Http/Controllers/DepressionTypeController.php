@@ -40,6 +40,7 @@ class DepressionTypeController extends Controller
                     'min:' . $request->scoreRangeStart,
                     'unique:depression_types'
                 ],
+                'message' => 'required|string|unique:depression_types',
             ]);     
             
             if ($validator->fails()) {
@@ -51,6 +52,7 @@ class DepressionTypeController extends Controller
                     'type' => $request->type,
                     'scoreRangeStart' => $request->scoreRangeStart,
                     'scoreRangeEnd' => $request->scoreRangeEnd,
+                    'message' => $request->message
                 ]);
 
                 if ($depressionTypes) {
@@ -84,19 +86,18 @@ class DepressionTypeController extends Controller
     public function update(Request $request, $d_id, $a_id) 
     {
         $validator = Validator::make($request->all(), [
-            'type' => 'required|string|unique:depression_types,type,' . $d_id,
+            'type' => 'required|string',
             'scoreRangeStart' => [
                 'required',
                 'numeric',
                 'min:1',
-                'unique:depression_types,scoreRangeStart,NULL,id,type,' . $request->type,
             ],
             'scoreRangeEnd' => [
                 'required',
                 'numeric',
                 'min:' . $request->scoreRangeStart,
-                'unique:depression_types,scoreRangeEnd,NULL,id,type,' . $request->type,
             ],
+            'message' => 'required|string'
         ]);     
 
         if ($validator->fails()) {
@@ -114,6 +115,7 @@ class DepressionTypeController extends Controller
                         'type' => $request->type,
                         'scoreRangeStart' => $request->scoreRangeStart,
                         'scoreRangeEnd' => $request->scoreRangeEnd, 
+                        'message' => $request->message
                     ]);
 
                     return response()->json([

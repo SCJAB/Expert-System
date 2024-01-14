@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('depression_types', function (Blueprint $table) {
+        Schema::create('super_users', function (Blueprint $table) {
             $table->id();
-            $table->string('type');
-            $table->integer('scoreRangeStart'); 
-            $table->integer('scoreRangeEnd');
-            $table->string('message');
+            $table->unsignedBigInteger('adminID');
+            $table->foreign('adminID')->references('id')->on('admins')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('depression_types');
+        Schema::dropIfExists('super_users');
     }
 };

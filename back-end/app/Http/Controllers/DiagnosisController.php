@@ -7,6 +7,7 @@ use App\Models\Option;
 use App\Models\Question;
 use App\Models\Response;
 use App\Models\Taker;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -27,8 +28,9 @@ class DiagnosisController extends Controller
                 return [
                     'id' => $diagnosis->id,
                     'taker' => $diagnosis->taker->first_name . ' ' . $diagnosis->taker->last_name,
-                    'depression_type' => $depressionType,
                     'total_score' => $sumOfScores,
+                    'depression_type' => $depressionType,
+                    // 'message' => $depressionType->message,
                     'responses' => $diagnosis->responses->map(function ($response) {
                         return [
                             'question' => $response->question->question,
@@ -44,27 +46,6 @@ class DiagnosisController extends Controller
             return response()->json(['diagnoses' => 'No Diagnosis Found']);
         }
     }
-
-    private function calculateSumOfScores($diagnosis)
-    {
-        // Calculate the sum of scores for the associated options
-        $sumOfScores = $diagnosis->responses->sum(function ($response) {
-            return optional($response->option)->score ?? 0;
-        });
-
-        return $sumOfScores;
-    }
-
-    private function getDepressionType($sumOfScores)
-    {
-        // Retrieve the depression type based on the score range
-        $depressionType = DB::table('depression_types')
-            ->where('scoreRangeStart', '<=', $sumOfScores)
-            ->where('scoreRangeEnd', '>=', $sumOfScores)
-            ->value('type');
-
-        return $depressionType;
-    }    
 
     public function create(Request $request, $id)
     {
@@ -109,6 +90,35 @@ class DiagnosisController extends Controller
         ], 201);
     }
 
+    public function read($id)
+    {
+        try {
+            $diagnosis = Diagnosis::with(['depressionType', 'responses.option'])
+                ->where('id', $id)
+                ->firstOrFail();
+
+            $diagnosisWithDetails = [
+                'id' => $diagnosis->id,
+                'taker' => $diagnosis->taker->first_name . ' ' . $diagnosis->taker->last_name,
+                'taken_at' => $diagnosis->created_at->format('m/d/Y H:i A'),
+                'total_score' => $this->calculateSumOfScores($diagnosis),
+                'depression_type' => $this->getDepressionType($this->calculateSumOfScores($diagnosis)),
+                'responses' => $diagnosis->responses->map(function ($response) {
+                    return [
+                        'question' => $response->question->question,
+                        'answer' => $response->option->option,
+                        'score' => optional($response->option)->score,
+                    ];
+                }),
+            ];
+
+            return response()->json(['diagnosis' => $diagnosisWithDetails]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['message' => 'Diagnosis Not Found'], 404);
+        }
+    }
+
+
     public function read_recent()
     {
         // Retrieve the latest diagnosis with associated depression type and responses
@@ -122,8 +132,9 @@ class DiagnosisController extends Controller
                 'id' => $latestDiagnosis->id,
                 'taker' => $latestDiagnosis->taker->first_name . ' ' . $latestDiagnosis->taker->last_name,
                 'taken_at' => $latestDiagnosis->created_at->format('m/d/Y H:i A'),
-                'depression_type' => $this->getDepressionType($this->calculateSumOfScores($latestDiagnosis)),
                 'total_score' => $this->calculateSumOfScores($latestDiagnosis),
+                'depression_type' => $this->getDepressionType($this->calculateSumOfScores($latestDiagnosis)),
+                
                 'responses' => $latestDiagnosis->responses->map(function ($response) {
                     return [
                         'question' => $response->question->question,
@@ -133,10 +144,33 @@ class DiagnosisController extends Controller
                 }),
             ];
 
-            return response()->json(['Recent Diagnosis' => $diagnosisWithDetails]);
+            return response()->json(['diagnosis' => $diagnosisWithDetails]);
         } else {
             return response()->json(['message' => 'No recent diagnosis found']);
         }
     }
+
+    private function calculateSumOfScores($diagnosis)
+    {
+        // Calculate the sum of scores for the associated options
+        $sumOfScores = $diagnosis->responses->sum(function ($response) {
+            return optional($response->option)->score ?? 0;
+        });
+
+        return $sumOfScores;
+    }
+
+    private function getDepressionType($sumOfScores)
+    {
+        // Retrieve the depression type and message based on the score range
+        $result = DB::table('depression_types')
+        ->where('scoreRangeStart', '<=', $sumOfScores)
+        ->where('scoreRangeEnd', '>=', $sumOfScores)
+        ->select('type', 'message')
+        ->first();
+
+        // If a result is found, return the type and message; otherwise, return null
+        return $result ? ['type' => $result->type, 'message' => $result->message] : null;
+    }    
 
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\OptionController;
 use App\Http\Controllers\DiagnosisController;
 use App\Http\Controllers\RelationshipController;
+use App\Http\Controllers\SuperUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -41,6 +42,9 @@ Route::get('admins/{id}', [AdminController::class, 'read']);
 Route::put('admins/{id}/edit', [AdminController::class, 'update']);
 Route::delete('admins/{id}/delete', [AdminController::class, 'delete']);
 
+//SuperUser
+Route::get('super-user', [SuperUserController::class, 'index']);
+
 //Questions
 Route::get('questions', [QuestionController::class, 'index']); 
 Route::post('questions/{id}', [QuestionController::class, 'create']); 
@@ -66,6 +70,7 @@ Route::delete('depression-types/{d_id}/{a_id}/delete', [DepressionTypeController
 Route::get('diagnoses', [DiagnosisController::class, 'index']);
 Route::post('diagnoses/{id}', [DiagnosisController::class, 'create']); // ara shean kani ang link para maka create
 Route::get('recent_diagnosis', [DiagnosisController::class, 'read_recent']); // for email and result
+Route::get('diagnoses/{id}', [DiagnosisController::class, 'read']);
 
 ////Relationships////
 Route::get('questions-options', [RelationshipController::class, 'questionOption']); // display questions with options and scores

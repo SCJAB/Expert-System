@@ -31,4 +31,9 @@ class Admin extends Model
     {
         return $this->hasMany(Diagnosis::class, 'adminID');
     }
+
+    public function superUser()
+    {
+        return $this->hasOne(SuperUser::class, 'adminID');
+    }
 }
