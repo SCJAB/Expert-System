@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center items-center h-[89vh] text-3xl bg-test fade-in relative">
+  <div class="flex justify-center items-center h-screen text-3xl bg-test fade-in relative">
     <div class="w-8/12 px-10 py-5 bg-black bg-opacity-50 rounded-2xl">
       <div class="carousel-container">
         <div v-for="(question, index) in questions" :key="question.id" :class="{ 'hidden': currentQuestionIndex !== index }" class="carousel-slide font-bold text-[#ffc599]">
