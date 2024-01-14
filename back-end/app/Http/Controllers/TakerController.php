@@ -72,21 +72,6 @@ class TakerController extends Controller
         }
     }
 
-    // public function edit($id) 
-    // {
-    //     $taker = Taker::find($id);
-
-    //     if ($taker) {
-    //         return response()->json([
-    //             'taker' => $taker
-    //         ]);
-    //     } else {
-    //         return response()->json([
-    //             'message' => 'Taker Not Found'
-    //         ]);
-    //     }
-    // }
-
     public function update(Request $request, $id) 
     {
         $validator = Validator::make($request->all(), [

@@ -30,7 +30,6 @@ class DiagnosisController extends Controller
                     'taker' => $diagnosis->taker->first_name . ' ' . $diagnosis->taker->last_name,
                     'total_score' => $sumOfScores,
                     'depression_type' => $depressionType,
-                    // 'message' => $depressionType->message,
                     'responses' => $diagnosis->responses->map(function ($response) {
                         return [
                             'question' => $response->question->question,
@@ -149,6 +148,40 @@ class DiagnosisController extends Controller
             return response()->json(['message' => 'No recent diagnosis found']);
         }
     }
+
+    public function read_taker_diagnoses($id) {
+        $taker = Taker::find($id);
+    
+        if (!$taker) {
+            return response()->json([
+                'message' => 'Taker not found',
+            ]);
+        }
+    
+        // Retrieve all diagnoses for the specific taker with associated depression type and responses
+        $diagnoses = Diagnosis::where('takerID', $taker->id)->with(['depressionType', 'responses.option'])->get();
+    
+        // Check if there are diagnoses
+        if ($diagnoses->count() > 0) {
+            // Transform diagnoses to include depression type, sum of scores, and other information
+            $diagnosesWithDetails = $diagnoses->map(function ($diagnosis) {
+                $sumOfScores = $this->calculateSumOfScores($diagnosis);
+                $depressionType = $this->getDepressionType($sumOfScores);
+    
+                return [
+                    'id' => $diagnosis->id,
+                    'taker' => $diagnosis->taker->first_name . ' ' . $diagnosis->taker->last_name,
+                    'total_score' => $sumOfScores,
+                    'depression_type' => $depressionType,
+                ];
+            });
+    
+            return response()->json(['Diagnoses' => $diagnosesWithDetails]);
+        } else {
+            return response()->json(['diagnoses' => 'No Diagnosis Found']);
+        }
+    }
+    
 
     private function calculateSumOfScores($diagnosis)
     {

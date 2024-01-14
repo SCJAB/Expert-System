@@ -71,21 +71,6 @@ class AdminController extends Controller
         }
     }
 
-    // public function edit($id) 
-    // {
-    //     $taker = Taker::find($id);
-
-    //     if ($taker) {
-    //         return response()->json([
-    //             'taker' => $taker
-    //         ]);
-    //     } else {
-    //         return response()->json([
-    //             'message' => 'Taker Not Found'
-    //         ]);
-    //     }
-    // }
-
     public function update(Request $request, $id) 
     {
         $validator = Validator::make($request->all(), [
@@ -121,6 +106,32 @@ class AdminController extends Controller
                     'message' => 'Admin Not Found'
                 ]);
             }               
+        }
+    }
+
+    public function read_admin_questions() 
+    {
+        $admins = Admin::with('questions')->get();
+
+        if ($admins->count() > 0) {
+            return response()->json(['admins' => $admins]);
+        } else {
+            return response()->json([
+                'admins' => 'No Admins Found'
+            ]);
+        }
+    }
+
+    public function read_admin_options() 
+    {
+        $admins = Admin::with('options')->get();
+
+        if ($admins->count() > 0) {
+            return response()->json(['admins' => $admins]);
+        } else {
+            return response()->json([
+                'admins' => 'No Admins Found'
+            ]);
         }
     }
 
