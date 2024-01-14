@@ -20,7 +20,7 @@ class TakersTableSeeder extends Seeder
                 'first_name' => 'First' . $i,
                 'last_name' => 'Last' . $i,
                 'age' => rand(18, 50),
-                'email' => 'email' . $i . '@example.com',
+                'email' => 'taker' . $i . '@example.com',
                 'password' => 'password'. $i
             ]);
         }
