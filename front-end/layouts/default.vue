@@ -17,7 +17,7 @@
             <slot />
         </div>
 
-        <footer class="bg-[#b9b9b8] h-32 border-2 flex items-center justify-center fade-in">
+        <footer class="bg-[#b9b9b8] h-32 flex items-center justify-center fade-in">
             <div class="grid gap-3">
                 <div>
                     &copy; {{ new Date().getFullYear() }} Untangled. All rights reserved.
