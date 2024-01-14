@@ -26,4 +26,9 @@ class Admin extends Model
     {
         return $this->hasMany(Option::class, 'adminID');
     }
+
+    public function diagnoses()
+    {
+        return $this->hasMany(Diagnosis::class, 'adminID');
+    }
 }
