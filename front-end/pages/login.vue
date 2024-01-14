@@ -83,7 +83,7 @@ const state = reactive({
 
 
 async function handleLogin(){
-  const params = {
+  const params = { 
     email: state.user.email,
     password: state.user.password
   }

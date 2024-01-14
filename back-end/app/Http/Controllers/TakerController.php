@@ -32,7 +32,7 @@ class TakerController extends Controller
             ]);
         }
          
-    }
+    } 
 
     public function login(AuthenticateTakerRequest $payload){
         $email = $payload->email; 

@@ -4,7 +4,7 @@
       <div class="bg-orange-300 bg-opacity-20 flex rounded-2xl shadow-lg max-w-3xl p-5 items-center">
         <div class="sm:w-1/2 px-8">
           <h2 class="font-bold text-2xl text-[#1F0805]">Register</h2>
-          <p class="text-sm mt-4 text-[#1F0805]">If you're already a member, easily log in</p>
+          <p class="text-sm mt-4 text-[#1f0805]">If you're already a member, easily log in</p>
           <form class="flex flex-col gap-4" @submit.prevent="handleRegister">
             <div class="form-group">
               <h1 class="text-red-600"></h1>
