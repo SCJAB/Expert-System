@@ -16,19 +16,19 @@ class Option extends Model
         'score'
     ];
 
-    public function admins()
+    public function admin()
     {
         return $this->belongsTo(Admin::class, 'adminID');
     }
 
-    public function questions()
+    public function question()
     {
         return $this->belongsTo(Question::class, 'questionID');
     }
 
-    public function response()
+    public function responses()
     {
-        return $this->belongsTo(Response::class, 'responseID');
+        return $this->hasMany(Response::class, 'optionID');
     }
 
 }
