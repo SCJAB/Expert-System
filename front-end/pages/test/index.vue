@@ -22,7 +22,7 @@
       </div>
     </div>
 
-    <div v-if="errorMessage" class="error-message absolute top-0 left-1/2 transform -translate-x-1/2 mt-4 p-2 text-white bg-red-500 rounded text-base">
+    <div v-if="errorMessage" class="error-message absolute top-24 left-1/2 transform -translate-x-1/2 mt-4 p-2 text-white bg-red-500 rounded text-base">
       {{ errorMessage }}
     </div>
   </div>
