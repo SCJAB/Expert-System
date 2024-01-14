@@ -74,7 +74,7 @@ const state = reactive({
 
     async function handleLogout(){
         try{
-        const response = await $fetch(`http://127.0.0.1:8000/api/logout`, {
+        const response = await $fetch(`http://127.0.0.1:8000/api/logout-takers`, {
         method: 'POST',
         headers:{
             'Authorization': 'Bearer ' + localStorage.getItem('_token')

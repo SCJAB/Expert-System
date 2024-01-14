@@ -18,6 +18,10 @@ return new class extends Migration
             $table->string('type');
             $table->integer('scoreRangeStart'); 
             $table->integer('scoreRangeEnd');
+<<<<<<< HEAD
+=======
+            $table->string('message');
+>>>>>>> origin/master
             $table->timestamps();
         });
     }
