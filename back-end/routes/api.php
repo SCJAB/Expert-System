@@ -27,6 +27,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::middleware('auth:sanctum')->get('/send-verify-mail/takers/{email}', [TakerController::class, 'sendVerifyEmail']);
 Route::middleware('auth:sanctum')->get('/send-verify-mail/admins/{email}', [AdminController::class, 'sendVerifyEmail']);
+Route::middleware('auth:sanctum')->post('/send-result-email', [TakerController::class, 'sendResultEmail']);
 
 //Takers
 Route::middleware(['auth:sanctum','verified'])->get('takers', [TakerController::class, 'index']);

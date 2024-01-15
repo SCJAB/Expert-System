@@ -94,7 +94,7 @@
     console.log(response.data);
     if(response.data.user.is_verified === 0){
       try{
-      const verify = await $fetch(`http://127.0.0.1:8000/api/send-verify-mail/takers/${params.email}`, {
+      const verify = await $fetch(`http://127.0.0.1:8000/api/send-verify-mail/admins/${params.email}`, {
       method: 'GET',
       headers:{
             'Authorization': 'Bearer ' + localStorage.getItem('_token')

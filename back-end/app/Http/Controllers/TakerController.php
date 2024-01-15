@@ -116,6 +116,29 @@ class TakerController extends Controller
         }
 
     }
+
+    public function sendResultEmail(Request $payload)
+{
+    if (auth()->user()) {
+        $taker = $payload->user(); // Assuming the user is authenticated
+
+        $result = $payload->result; // Assuming you send the result data in the request
+
+        $data['email'] = $taker->email;
+        $data['title'] = "Result Email";
+        $data['body'] = "Here is the result of your diagnosis";
+        $data['result'] = $result;
+
+        // Use the correct view name for the mail
+        Mail::send('resultMail', ['data' => $data], function ($message) use ($data) {
+            $message->to($data['email'])->subject($data['title']);
+        });
+
+        return response()->json(['success' => true, 'msg' => 'Result email sent successfully']);
+    } else {
+        return response()->json(['success' => false, 'msg' => 'User is not authenticated']);
+    }
+}
     
 
     public function getTaker(Request $payload)

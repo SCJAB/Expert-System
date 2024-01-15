@@ -55,24 +55,48 @@
     }
   
   
-      async function getResult() {
-  try {
-    const response = await $fetch(`http://127.0.0.1:8000/api/recent-diagnosis`, {
-      method: 'GET',
-      headers: {
-        'Authorization': 'Bearer ' + localStorage.getItem('_token')
-      }
-    });
+    async function getResult() {
+    try {
+        const response = await $fetch(`http://127.0.0.1:8000/api/recent-diagnosis`, {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('_token')
+            }
+        });
 
-    if (response && response.diagnosis) {
-      console.log(response.diagnosis);
-      state.result = response.diagnosis;
+        if (response && response.diagnosis) {
+            console.log(response.diagnosis);
+            state.result = response.diagnosis;
+
+            // Add a new function to send the result email
+            sendResultEmail(response.diagnosis);
+        }
+    } catch (error) {
+        state.errors = error.response;
+        console.error('Error fetching recent diagnosis:', error);
     }
-  } catch (error) {
-    state.errors = error.response;
-    console.error('Error fetching recent diagnosis:', error);
-  }
 }
+
+async function sendResultEmail(result) {
+    try {
+      console.log('test');
+        const response = await $fetch('http://127.0.0.1:8000/api/send-result-email', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('_token'),
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ result }),
+        });
+
+        console.log(response);
+    } catch (error) {
+    console.error('Error in send-result-email endpoint:', error);
+    // Additional logging or error handling
+    res.status(500).json({ error: 'Internal Server Error' });
+}
+}
+
   
   </script>
   
