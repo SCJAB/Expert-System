@@ -6,7 +6,7 @@ use App\Http\Controllers\DepressionTypeController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\OptionController;
 use App\Http\Controllers\DiagnosisController;
-use App\Http\Controllers\RelationshipController;
+use App\Http\Controllers\SuperUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,21 +25,36 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::middleware('auth:sanctum')->get('/send-verify-mail/takers/{email}', [TakerController::class, 'sendVerifyEmail']);
+Route::middleware('auth:sanctum')->get('/send-verify-mail/admins/{email}', [AdminController::class, 'sendVerifyEmail']);
+
 //Takers
-Route::get('takers', [TakerController::class, 'index']);
+Route::middleware(['auth:sanctum','verified'])->get('takers', [TakerController::class, 'index']);
 Route::post('takers', [TakerController::class, 'create']); // create takers
 Route::get('takers/{id}', [TakerController::class, 'read']);
-// Route::get('takers/{id}/edit', [TakerController::class, 'edit']);
 Route::put('takers/{id}/edit', [TakerController::class, 'update']);
 Route::delete('takers/{id}/delete', [TakerController::class, 'delete']);
+
+//Takers Login
+Route::post('login-takers', [TakerController::class, 'login']);
+Route::middleware('auth:sanctum')->get('taker', [TakerController::class, 'getTaker']);
+Route::middleware('auth:sanctum')->post('logout-takers', [TakerController::class, 'logout']);
+
+Route::post('login-admins', [AdminController::class, 'login']);
+Route::middleware('auth:sanctum')->get('admin', [AdminController::class, 'getAdmin']);
+Route::middleware('auth:sanctum')->post('logout-admins', [AdminController::class, 'logout']);
 
 //Admins
 Route::get('admins', [AdminController::class, 'index']);
 Route::post('admins', [AdminController::class, 'create']); 
 Route::get('admins/{id}', [AdminController::class, 'read']);
-// Route::get('admins/{id}/edit', [AdminController::class, 'edit']);
 Route::put('admins/{id}/edit', [AdminController::class, 'update']);
 Route::delete('admins/{id}/delete', [AdminController::class, 'delete']);
+Route::get('admins-questions', [AdminController::class, 'read_admin_questions']); // display questions made by admins
+Route::get('admins-options', [AdminController::class, 'read_admin_options']); // display options made by admins
+
+//SuperUser
+Route::get('super-user', [SuperUserController::class, 'index']);
 
 //Questions
 Route::get('questions', [QuestionController::class, 'index']); 
@@ -47,6 +62,7 @@ Route::post('questions/{id}', [QuestionController::class, 'create']);
 Route::get('questions/{id}', [QuestionController::class, 'read']);
 Route::put('questions/{q_id}/{a_id}/edit', [QuestionController::class, 'update']);
 Route::delete('questions/{q_id}/{a_id}/delete', [QuestionController::class, 'delete']);
+Route::get('questions-options', [QuestionController::class, 'read_question_options']); // display questions with options and scores
 
 //Options
 Route::get('options', [OptionController::class, 'index']); 
@@ -65,10 +81,6 @@ Route::delete('depression-types/{d_id}/{a_id}/delete', [DepressionTypeController
 //Diagnosis
 Route::get('diagnoses', [DiagnosisController::class, 'index']);
 Route::post('diagnoses/{id}', [DiagnosisController::class, 'create']); // ara shean kani ang link para maka create
-Route::get('recent_diagnosis', [DiagnosisController::class, 'read_recent']); // for email and result
-
-////Relationships////
-Route::get('questions-options', [RelationshipController::class, 'questionOption']); // display questions with options and scores
-Route::get('admins-questions', [RelationshipController::class, 'adminQuestion']); // display questions made by admins
-Route::get('admins-options', [RelationshipController::class, 'adminOption']); // display options made by admins
-
+Route::get('recent-diagnosis', [DiagnosisController::class, 'read_recent']); // for email and result
+Route::get('diagnoses/{id}', [DiagnosisController::class, 'read']); // for specific diagnosis
+Route::get('taker-diagnoses/{id}', [DiagnosisController::class, 'read_taker_diagnoses']); // for specific takers

@@ -35,8 +35,40 @@ const questions = ref([]);
 const selectedOptions = ref({});
 const currentQuestionIndex = ref(0);
 const errorMessage = ref('');
+const state = reactive({
+  user: null,
+  result: null
+})
 
 onMounted(fetchQuestions);
+onMounted(()=>{
+    checkLogged();
+    fetchUser()
+})
+
+function checkLogged(){
+  if(!localStorage.getItem('_token')){
+    navigateTo('/login');
+  }
+}
+
+async function fetchUser(){
+try{
+    const response = await $fetch(`http://127.0.0.1:8000/api/taker`, {
+    method: 'GET',
+    headers:{
+        'Authorization': 'Bearer ' + localStorage.getItem('_token')
+    }
+    })
+    if(response.data){
+        state.user = response.data
+    }
+    }
+catch(error){
+    state.errors = error.response
+    console.log('error', error)
+}
+}
 
 async function fetchQuestions() {
   const response = await fetch('http://127.0.0.1:8000/api/questions-options');
@@ -63,7 +95,7 @@ const submitAnswers = async () => {
       return;
     }
 
-    const response = await fetch('http://127.0.0.1:8000/api/diagnoses/1', {
+    const response = await fetch(`http://127.0.0.1:8000/api/diagnoses/${state.user.id}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(selectedOptions.value),
@@ -74,6 +106,8 @@ const submitAnswers = async () => {
 
     errorMessage.value = '';
 
+    navigateTo('/test/result');
+    
   } catch (error) {
     console.error('Error submitting answers:', error);
     errorMessage.value = 'An error occurred while submitting answers.';
