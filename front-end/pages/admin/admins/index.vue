@@ -34,6 +34,18 @@
   <script>
   export default {
     async setup() {
+      const data = ref(null);
+
+      // Check if user is logged in on component mount
+      onMounted(() => {
+        checkLogged();
+      });
+
+      async function checkLogged() {
+        if (!localStorage.getItem('_token')) {
+          navigateTo('/login');
+        }
+      }
       try {
         const { data } = await useFetch('http://127.0.0.1:8000/api/admins/');
   
@@ -47,7 +59,6 @@
         // You might want to handle errors more gracefully, for example by showing an error message to the user
       }
     },
-  
 };
   </script>
   

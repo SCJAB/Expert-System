@@ -45,6 +45,9 @@ Route::post('login-admins', [AdminController::class, 'login']);
 Route::middleware('auth:sanctum')->get('admin', [AdminController::class, 'getAdmin']);
 Route::middleware('auth:sanctum')->post('logout-admins', [AdminController::class, 'logout']);
 
+//Forgot password
+Route::post('forgot-password', [TakerController::class, 'forgotPassword']);
+
 //Admins
 Route::get('admins', [AdminController::class, 'index']);
 Route::post('admins', [AdminController::class, 'create']); 

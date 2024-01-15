@@ -10,11 +10,11 @@
                     </ul>
                     <template v-if="!isLoggedIn">
                         <!-- Show login link if not logged in -->
-                        <nuxt-link to="/login" class="p-2 font-bold text-lg text-white rounded bg-yellow-700 hover:bg-transparent hover:text-yellow-950 hover:scale-110 duration-500 button">Login</nuxt-link>
+                        <nuxt-link to="/login" class="p-2 font-bold text-lg text-white rounded bg-yellow-700 hover:bg-transparent hover:text-yellow-950 hover:scale-110 duration-500 button">Member Login</nuxt-link>
                     </template>
                     <template v-else>
                         <!-- Show logout link if logged in -->
-                        <button @click="logout" class="p-2 font-bold text-lg text-white rounded bg-yellow-700 hover:bg-transparent hover:text-yellow-950 hover:scale-110 duration-500 button">Logout</button>
+                        <button @click="logout" class="p-2 font-bold text-lg text-white rounded bg-yellow-700 hover:bg-transparent hover:text-yellow-950 hover:scale-110 duration-500 button">Member Logout</button>
                     </template>
                 </div>
             </nav>
@@ -47,19 +47,32 @@ export default {
         };
     },
     mounted() {
+        // Call checkLogged initially
         this.checkLogged();
+
+        // Set up an interval to periodically check for _token
+        this.checkInterval = setInterval(() => {
+            this.checkLogged();
+        }, 500); // Adjust the interval time as needed
+    },
+    beforeDestroy() {
+        // Clear the interval when the component is destroyed
+        clearInterval(this.checkInterval);
     },
     methods: {
         checkLogged() {
-            // Check if _token exists in localStorage
-            this.isLoggedIn = !!localStorage.getItem('_token');
+            if (localStorage.getItem('_token')){
+                this.isLoggedIn = true;
+            } else {
+                this.isLoggedIn = false;
+            }
         },
         logout() {
             // Perform logout logic here
             // For example, remove _token from localStorage
             localStorage.removeItem('_token');
             this.isLoggedIn = false;
-            navigateTo('/index');
+            navigateTo('/login');
         }
     }
 };

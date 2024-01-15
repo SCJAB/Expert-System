@@ -104,7 +104,7 @@ class AdminController extends Controller
             $admin->is_verified = '1';
             $admin->email_verified_at = $datetime;
             $admin->save();
-            return redirect('http://localhost:3000/admin/test')->with([
+            return redirect('http://localhost:3000/admin/admins')->with([
                 'success' => true,
                 'msg' => 'User is verified',
             ]);

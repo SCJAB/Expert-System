@@ -36,7 +36,7 @@
             </div>
             <button class="bg-[#1F0805] rounded-full text-white py-2 hover:scale-105 duration-400" type="submit" name="register">Register</button>
             <div class="bg-[#1F0805] rounded-full text-white py-2 hover:scale-105 duration-400">
-              <a class="flex justify-center items-center" href="admin/login"><ion-icon name="arrow-back-outline"></ion-icon>Go back</a>
+              <a class="flex justify-center items-center" href="/admin/login"><ion-icon name="arrow-back-outline"></ion-icon>Go back</a>
             </div>
           </form>
         </div>

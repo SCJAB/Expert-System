@@ -31,6 +31,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 
+
 const questions = ref([]);
 const selectedOptions = ref({});
 const currentQuestionIndex = ref(0);
@@ -40,11 +41,16 @@ const state = reactive({
   result: null
 })
 
+onMounted(()=>{
+        navigateTo('/test');
+    })
+
 onMounted(fetchQuestions);
 onMounted(()=>{
     checkLogged();
     fetchUser()
 })
+
 
 function checkLogged(){
   if(!localStorage.getItem('_token')){

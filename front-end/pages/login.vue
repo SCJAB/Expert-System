@@ -29,15 +29,6 @@
                     <hr class="text-gray-600">
                 </div>
 
-                <button class="bg-white border py-2 w-full rounded-xl mt-5 flex justify-center items-center text-lg hover:scale-105 duration-400">
-                    <ion-icon class="h-[25px] w-[25px] mr-3" name="logo-google"></ion-icon>
-                    Login with Google
-                </button>
-
-                <div class="border-b">
-                    <button type="button" class="mt-5 text-xs py-4 hover:text-red-500">Forgot your password?</button>
-                </div>
-
                 <div class="mt-3 text-xs flex justify-between items-center">
                     <p> don't have an account?</p>
                     <button class="py-2 px-5 bg-white border rounded-xl hover:scale-105 duration-400"><a href="registration">Register</a></button>

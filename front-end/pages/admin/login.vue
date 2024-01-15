@@ -25,24 +25,16 @@
                       <p class="text-center">OR</p>
                       <hr class="text-gray-600">
                   </div>
-  
-                  <button class="bg-white border py-2 w-full rounded-xl mt-5 flex justify-center items-center text-lg hover:scale-105 duration-400">
-                      <ion-icon class="h-[25px] w-[25px] mr-3" name="logo-google"></ion-icon>
-                      Login with Google
-                  </button>
-  
-                  <div class="border-b">
-                      <button type="button" class="mt-5 text-xs py-4 hover:text-red-500">Forgot your password?</button>
-                  </div>
+
   
                   <div class="mt-3 text-xs flex justify-between items-center">
                       <p> don't have an account?</p>
-                      <button class="py-2 px-5 bg-white border rounded-xl hover:scale-105 duration-400"><a href="registration">Register</a></button>
+                      <button class="py-2 px-5 bg-white border rounded-xl hover:scale-105 duration-400"><a href="/admin/register">Register</a></button>
                   </div>
               </div>
   
               <div class="hidden md:block w-1/2">
-                  <a href="login"><img class="hover:scale-110 duration-150 rounded-2xl" src="../../img/mental_health.jpg" alt=""></a>
+                  <a href="admin/login"><img class="hover:scale-110 duration-150 rounded-2xl" src="../../img/mental_health.jpg" alt=""></a>
               </div>
           </div>
       </section>
@@ -74,6 +66,7 @@
       password: null
     }
   })
+
   
   
   async function handleLogin(){
@@ -94,21 +87,21 @@
     console.log(response.data);
     if(response.data.user.is_verified === 0){
       try{
-      const verify = await $fetch(`http://127.0.0.1:8000/api/send-verify-mail/takers/${params.email}`, {
+      const verify = await $fetch(`http://127.0.0.1:8000/api/send-verify-mail/admins/${params.email}`, {
       method: 'GET',
       headers:{
             'Authorization': 'Bearer ' + localStorage.getItem('_token')
           }
         });
 
-        navigateTo('/verify');
+        navigateTo('/admin/verify');
       }
       catch(error){
 
       }
     }
     else{
-      navigateTo('/dashboard');
+      navigateTo('/admin/dashboard');
     }
   }
 
