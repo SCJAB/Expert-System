@@ -10,23 +10,23 @@ class Response extends Model
     use HasFactory;
      
     protected $fillable = [
-        'diagnosisID',
+        'takerID', 
         'questionID', 
-        'optionID',
+        'answerID'
     ];
+
+    public function taker()
+    {
+        return $this->belongsTo(Taker::class, 'takerID');
+    }
 
     public function question()
     {
-        return $this->belongsTo(Question::class, 'questionID');
+        return $this->hasMany(Question::class, 'responseID');
     }
 
     public function option()
     {
-        return $this->belongsTo(Option::class, 'optionID');
-    }   
-
-    public function diagnosis()
-    {
-        return $this->belongsTo(Diagnosis::class, 'diagnosisID');
+        return $this->hasMany(Option::class, 'responseID');
     }
 }

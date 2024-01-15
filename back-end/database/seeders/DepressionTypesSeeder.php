@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\DepressionType;
 use Illuminate\Database\Seeder;
 
-class DepressionTypesTableSeeder extends Seeder
+class DepressionTypesSeeder extends Seeder
 {
     /**
      * Run the database seeds.

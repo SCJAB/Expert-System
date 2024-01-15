@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use App\Models\DepressionType;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 
 class DepressionTypeController extends Controller
@@ -65,6 +66,8 @@ class DepressionTypeController extends Controller
             }
         }
     }
+
+
 
     public function read($id) 
     {

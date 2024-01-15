@@ -14,7 +14,7 @@ class Question extends Model
         'question'
     ];
 
-    public function admin()
+    public function admins()
     {
         return $this->belongsTo(Admin::class, 'adminID');
     }
@@ -26,6 +26,6 @@ class Question extends Model
 
     public function responses()
     {
-        return $this->hasMany(Response::class, 'questionID');
+        return $this->belongsTo(Response::class, 'responseID');
     }
 }

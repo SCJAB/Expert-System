@@ -14,9 +14,4 @@ class DepressionType extends Model
         'scoreRangeStart',
         'scoreRangeEnd'
     ];
-
-    public function diagnoses()
-    {
-        return $this->hasMany(Diagnosis::class, 'depression_type_id');
-    }
 }

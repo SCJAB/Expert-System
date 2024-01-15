@@ -13,10 +13,6 @@ use App\Models\Taker;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\URL;
 
 class TakerController extends Controller
 {
@@ -32,7 +28,7 @@ class TakerController extends Controller
             ]);
         }
          
-    } 
+    }
 
     public function login(AuthenticateTakerRequest $payload){
         $email = $payload->email; 
@@ -59,64 +55,6 @@ class TakerController extends Controller
         $taker->tokens()->delete();
         return "logout success";
     }
-
-    public function sendVerifyEmail($email){
-        if(auth()->user()){
-            $taker = Taker::where('email', $email)->first();
-    
-            if($taker){
-                $random = Str::random(40);
-                $domain = URL::to('/');
-                $url = $domain.'/verify-mail/takers/'.$random;
-    
-                $data['url'] = $url;
-                $data['email'] = $email;
-                $data['title'] = "Email verification";
-                $data['body'] = "Please click here to verify";
-    
-                // Use the correct view name for the mail
-                Mail::send('verifyMail',['data' => $data], function($message) use ($data){
-                    $message->to($data['email'])->subject($data['title']);
-                });
-    
-                // Retrieve the model instance
-                $takerModel = Taker::find($taker->id);
-                $takerModel->remember_token = $random;
-                $takerModel->save();
-    
-                return response()->json(['success'=>true, 'msg'=>'Mail sent success', '__token' => $random]);
-            }
-            else{
-                return response()->json(['success'=>false, 'msg'=>'User is not found']);
-            }
-        }
-        else{
-            return response()->json(['success'=>false, 'msg'=>'User is not authenticated']);
-        }
-    }
-
-    public function verificationMail($token){
-        $taker = Taker::where('remember_token',$token)->get();
-        if(count($taker) > 0){
-            $datetime = Carbon::now()->format('Y-m-d H:i:s');
-            $taker = Taker::find($taker[0]['id']);
-            $taker->remember_token = '';
-            $taker->is_verified = 1;
-            $taker->email_verified_at = $datetime;
-            $taker->save();
-            return redirect('http://localhost:3000/dashboard')->with([
-                'success' => true,
-                'msg' => 'User is verified',
-            ]);
-        }
-        else{
-            return response()->json([
-                'success'=>false, 'msg'=>'404'
-            ]);
-        }
-
-    }
-    
 
     public function getTaker(Request $payload)
     {
@@ -151,12 +89,23 @@ class TakerController extends Controller
             return response()->json([
                 'taker' => $taker
             ]);
-        } else {
-            return response()->json([
-                'message' => 'Taker Not Found'
-            ]);
         }
     }
+
+    // public function edit($id) 
+    // {
+    //     $taker = Taker::find($id);
+
+    //     if ($taker) {
+    //         return response()->json([
+    //             'taker' => $taker
+    //         ]);
+    //     } else {
+    //         return response()->json([
+    //             'message' => 'Taker Not Found'
+    //         ]);
+    //     }
+    // }
 
     public function update(UpdateTakerRequest $payload, $id) 
     {
@@ -182,14 +131,6 @@ class TakerController extends Controller
 
         if ($taker) {
             $taker->delete();
-
-            return response()->json([
-                'message' => 'Taker Deleted Successfully'
-            ]);
-        } else {
-            return response()->json([
-                'message' => 'Taker Not Found'
-            ]);
         }
     }
 }
