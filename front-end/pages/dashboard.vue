@@ -63,21 +63,6 @@ const state = reactive({
       background-color: #f5f5f5;
     }
 
-    header {
-      background-color: #2c3e50;
-      color: #ecf0f1;
-      text-align: center;
-      padding: 1em;
-    }
-
-    nav {
-      background-color: #34495e;
-      padding: 1em;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
     section {
       padding: 2em;
     }
