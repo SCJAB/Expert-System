@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="h-screen">
         
     </div>
 </template>
@@ -8,6 +8,6 @@
 
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 
 </style>
