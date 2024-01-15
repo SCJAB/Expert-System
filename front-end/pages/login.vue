@@ -45,7 +45,7 @@
             </div>
 
             <div class="hidden md:block w-1/2">
-                <a href="login"><img class="hover:scale-110 duration-150 rounded-2xl" src="../img/mental_health.jpg" alt=""></a>
+                <a href="/"><img class="hover:scale-110 duration-150 rounded-2xl" src="../img/mental_health.jpg" alt=""></a>
             </div>
         </div>
     </section>

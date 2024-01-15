@@ -41,7 +41,7 @@
           </form>
         </div>
         <div class="hidden md:block w-1/2">
-          <a href="registration"><img class="hover:scale-110 duration-150 rounded-2xl" src="../img/areu_ok1.jpg" alt=""></a>
+          <a href="/"><img class="hover:scale-110 duration-150 rounded-2xl" src="../img/areu_ok1.jpg" alt=""></a>
         </div>
       </div>
     </section>
