@@ -6,7 +6,7 @@ use App\Http\Controllers\DepressionTypeController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\OptionController;
 use App\Http\Controllers\DiagnosisController;
-use App\Http\Controllers\SuperUserController;
+use App\Http\Controllers\RelationshipController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -81,6 +81,10 @@ Route::delete('depression-types/{d_id}/{a_id}/delete', [DepressionTypeController
 //Diagnosis
 Route::get('diagnoses', [DiagnosisController::class, 'index']);
 Route::post('diagnoses/{id}', [DiagnosisController::class, 'create']); // ara shean kani ang link para maka create
-Route::get('recent-diagnosis', [DiagnosisController::class, 'read_recent']); // for email and result
-Route::get('diagnoses/{id}', [DiagnosisController::class, 'read']); // for specific diagnosis
-Route::get('taker-diagnoses/{id}', [DiagnosisController::class, 'read_taker_diagnoses']); // for specific takers
+Route::get('recent_diagnosis', [DiagnosisController::class, 'read_recent']); // for email and result
+
+////Relationships////
+Route::get('questions-options', [RelationshipController::class, 'questionOption']); // display questions with options and scores
+Route::get('admins-questions', [RelationshipController::class, 'adminQuestion']); // display questions made by admins
+Route::get('admins-options', [RelationshipController::class, 'adminOption']); // display options made by admins
+
