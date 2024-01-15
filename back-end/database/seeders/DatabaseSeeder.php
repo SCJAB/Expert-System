@@ -17,7 +17,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(TakersTableSeeder::class);
         $this->call(AdminsTableSeeder::class);
-        $this->call(SuperUserTableSeeder::class);
         $this->call(QuestionOptionsTableSeeder::class);
         $this->call(DepressionTypesTableSeeder::class);
         $this->call(DiagnosisTableSeeder::class);

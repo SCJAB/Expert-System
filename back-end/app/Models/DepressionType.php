@@ -12,8 +12,7 @@ class DepressionType extends Model
     protected $fillable = [
         'type',
         'scoreRangeStart',
-        'scoreRangeEnd',
-        'message'
+        'scoreRangeEnd'
     ];
 
     public function diagnoses()

@@ -20,9 +20,6 @@ return new class extends Migration
             $table->integer('age');
             $table->string('email');
             $table->string('password');
-            $table->integer('is_verified')->default(0);
-            $table->timestamp('email_verified_at')->nullable();
-            $table->rememberToken();
             $table->timestamps();
         });
     }

@@ -2,21 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\AdminResource;
-use App\Http\Resources\AdminCreateResource;
-use App\Http\Requests\AuthenticateAdminRequest;
-use App\Http\Requests\CreateAdminRequest;
-use App\Http\Requests\UpdateAdminRequest;
-use App\Http\Resources\AdminUpdateResource;
-use App\Http\Resources\AuthenticatedAdminResource;
 use App\Models\Admin;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\URL;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
@@ -33,115 +21,40 @@ class AdminController extends Controller
         }
     }
 
-    //Login Admin
-    public function login(AuthenticateAdminRequest $payload){
-        $email = $payload->email; 
-        $password = $payload->password;
-
-        $admin = Admin::where('email', $email)->first();
-
-        if(!$admin || !Hash::check($password, $admin->password)){
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect'],
-            ]);
-        }
-
-        $response = (object) [
-            'user' => new AdminResource($admin),
-            'token' => $admin->createToken('auth-token')->plainTextToken
-        ];
-
-        return new AuthenticatedAdminResource($response);
-    }
-
-    public function logout(Request $payload){
-        $taker = $payload->user();
-        $taker->tokens()->delete();
-        return "logout success";
-    }
-
-    public function sendVerifyEmail($email){
-        if(auth()->user()){
-            $admin = Admin::where('email', $email)->first();
-    
-            if($admin){
-                $random = Str::random(40);
-                $domain = URL::to('/');
-                $url = $domain.'/verify-mail/admins/'.$random;
-    
-                $data['url'] = $url;
-                $data['email'] = $email;
-                $data['title'] = "Email verification";
-                $data['body'] = "Please click here to verify";
-    
-                // Use the correct view name for the mail
-                Mail::send('verifyMail',['data' => $data], function($message) use ($data){
-                    $message->to($data['email'])->subject($data['title']);
-                });
-    
-                // Retrieve the model instance
-                $adminModel = Admin::find($admin->id);
-                $adminModel->remember_token = $random;
-                $adminModel->save();
-    
-                return response()->json(['success'=>true, 'msg'=>'Mail sent success', '__token' => $random]);
-            }
-            else{
-                return response()->json(['success'=>false, 'msg'=>'User is not found']);
-            }
-        }
-        else{
-            return response()->json(['success'=>false, 'msg'=>'User is not authenticated']);
-        }
-    }
-
-    public function verificationMail($token){
-        $admin = Admin::where('remember_token',$token)->get();
-        if(count($admin) > 0){
-            $datetime = Carbon::now()->format('Y-m-d H:i:s');
-            $admin = Admin::find($admin[0]['id']);
-            $admin->remember_token = '';
-            $admin->is_verified = 1;
-            $admin->email_verified_at = $datetime;
-            $admin->save();
-            return redirect('http://localhost:3000/dashboard')->with([
-                'success' => true,
-                'msg' => 'User is verified',
-            ]);
-        }
-        else{
-            return response()->json([
-                'success'=>false, 'msg'=>'404'
-            ]);
-        }
-
-    }
-    
-    public function getAdmin(Request $payload)
+    public function create(Request $request) 
     {
-        $admin = $payload->user();
-        return new AdminResource($admin);
-    }
-
-    public function create(CreateAdminRequest $payload) 
-    {
-        $first_name = $payload->first_name;
-        $last_name = $payload->last_name;
-        $age = $payload->age;
-        $email = $payload->email;
-        $password = $payload->password;
-
-        $admin = Admin::create([
-            'first_name' => $first_name,
-            'last_name' => $last_name,
-            'age' => $age,
-            'email' => $email,
-            'password' => bcrypt($password)
+        $validator = Validator::make($request->all(), [
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'age' => 'required|numeric|min:18|max:90',
+            'email' => 'required|email|max:255|unique:admins',
+            'password' => 'required|min:8|string|max:255|'
         ]);
 
-        return new AdminCreateResource($admin);
-    }
+        if ($validator->fails()) {
+            return response()->json([
+                'error' => $validator->messages()
+            ]);
+        } else {
+            $admin = Admin::create([
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'age' => $request->age,
+                'email' => $request->email,
+                'password' => $request->password
+            ]);
 
+            if ($admin) {
+                return response()->json([
+                    'message' => 'Admin Created Successfully'
+                ]);
+            } else {
+                return response()->json([
+                    'message' => 'Something Went Wrong'
+                ]);
+            }               
+        }
+    }
 
     public function read($id) 
     {
@@ -158,56 +71,58 @@ class AdminController extends Controller
         }
     }
 
-    public function read_admin_questions() 
-    {
-        $admins = Admin::with('questions')->get();
+    // public function edit($id) 
+    // {
+    //     $taker = Taker::find($id);
 
-        if ($admins->count() > 0) {
-            return response()->json(['admins' => $admins]);
-        } else {
+    //     if ($taker) {
+    //         return response()->json([
+    //             'taker' => $taker
+    //         ]);
+    //     } else {
+    //         return response()->json([
+    //             'message' => 'Taker Not Found'
+    //         ]);
+    //     }
+    // }
+
+    public function update(Request $request, $id) 
+    {
+        $validator = Validator::make($request->all(), [
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'age' => 'required|numeric|min:1',
+            'email' => 'required|email|max:255',
+            'password' => 'required|min:8|string|max:255|'
+        ]);
+
+        if ($validator->fails()) {
             return response()->json([
-                'admins' => 'No Admins Found'
+                'error' => $validator->messages()
             ]);
-        }
-    }
-
-    public function read_admin_options() 
-    {
-        $admins = Admin::with('options')->get();
-
-        if ($admins->count() > 0) {
-            return response()->json(['admins' => $admins]);
         } else {
-            return response()->json([
-                'admins' => 'No Admins Found'
-            ]);
-        }
-    }
-
-    public function update(UpdateAdminRequest $payload, $id) 
-    {
-        $first_name = $payload->first_name;
-        $last_name = $payload->last_name;
-        $age = $payload->age;
-        $email = $payload->email;
-        $password = $payload->password;
-
-        $admin = Admin::find($id);
+            $admin = Admin::find($id);
 
             if ($admin) {
 
                 $admin->update([
-                    'first_name' => $first_name,
-                    'last_name' => $last_name,
-                    'age' => $age,
-                    'email' => $email,
-                    'password' => $password
+                    'first_name' => $request->first_name,
+                    'last_name' => $request->last_name,
+                    'age' => $request->age,
+                    'email' => $request->email,
+                    'password' => $request->password
                 ]);
-            }
 
-            return new AdminUpdateResource($admin);               
+                return response()->json([
+                    'message' => 'Admin Updated Successfully'
+                ]);
+            } else {
+                return response()->json([
+                    'message' => 'Admin Not Found'
+                ]);
+            }               
+        }
     }
-    
 
     public function delete($id) 
     {

@@ -58,6 +58,7 @@ class QuestionController extends Controller
         }
     }
 
+
     public function read($id) 
     {
         $question = Question::find($id);
@@ -109,19 +110,6 @@ class QuestionController extends Controller
                     'message' => 'Question Not Found'
                 ]);
             }               
-        }
-    }
-
-    public function read_question_options() 
-    {
-        $questions = Question::with('options')->get();
-
-        if ($questions->count() > 0) {
-            return response()->json(['questions' => $questions]);
-        } else {
-            return response()->json([
-                'questions' => 'No Questions Found'
-            ]);
         }
     }
 
