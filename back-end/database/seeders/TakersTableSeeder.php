@@ -21,7 +21,7 @@ class TakersTableSeeder extends Seeder
                 'last_name' => 'Last' . $i,
                 'age' => rand(18, 50),
                 'email' => 'taker' . $i . '@example.com',
-                'password' => 'password'. $i
+                'password' => bcrypt('password'. $i)
             ]);
         }
     }

@@ -101,7 +101,7 @@ class AdminController extends Controller
             $datetime = Carbon::now()->format('Y-m-d H:i:s');
             $admin = Admin::find($admin[0]['id']);
             $admin->remember_token = '';
-            $admin->is_verified = 1;
+            $admin->is_verified = '1';
             $admin->email_verified_at = $datetime;
             $admin->save();
             return redirect('http://localhost:3000/dashboard')->with([

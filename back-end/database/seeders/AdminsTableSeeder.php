@@ -29,7 +29,7 @@ class AdminsTableSeeder extends Seeder
                 'last_name' => 'Last' . $i,
                 'age' => rand(18, 50),
                 'email' => 'admin' . $i . '@example.com',
-                'password' => 'password'. $i
+                'password' => bcrypt('password'. $i)
             ]);
         }
     }
