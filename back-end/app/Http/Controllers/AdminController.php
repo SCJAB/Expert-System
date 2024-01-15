@@ -122,7 +122,6 @@ class AdminController extends Controller
         $admin = $payload->user();
         return new AdminResource($admin);
     }
-
     public function create(CreateAdminRequest $payload) 
     {
         $first_name = $payload->first_name;

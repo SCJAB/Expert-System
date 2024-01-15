@@ -41,7 +41,7 @@ Route::middleware('auth:sanctum')->get('taker', [TakerController::class, 'getTak
 Route::middleware('auth:sanctum')->post('logout-takers', [TakerController::class, 'logout']);
 
 Route::post('login-admins', [AdminController::class, 'login']);
-Route::middleware('auth:sanctum')->get('admin', [AdminController::class, 'getTaker']);
+Route::middleware('auth:sanctum')->get('admin', [AdminController::class, 'getAdmin']);
 Route::middleware('auth:sanctum')->post('logout-admins', [AdminController::class, 'logout']);
 
 //Admins

@@ -51,45 +51,8 @@ const state = reactive({
     user: null
 })
     onMounted(()=>{
-        fetchUser()
+        navigateTo('/test');
     })
-
-    async function fetchUser(){
-    try{
-        const response = await $fetch(`http://127.0.0.1:8000/api/taker`, {
-        method: 'GET',
-        headers:{
-            'Authorization': 'Bearer ' + localStorage.getItem('_token')
-        }
-        })
-        if(response.data){
-            state.user = response.data
-        }
-        }
-    catch(error){
-        state.errors = error.response
-        console.log('error', error)
-    }
-    }
-
-    async function handleLogout(){
-        try{
-        const response = await $fetch(`http://127.0.0.1:8000/api/logout-takers`, {
-        method: 'POST',
-        headers:{
-            'Authorization': 'Bearer ' + localStorage.getItem('_token')
-            }
-        })
-        if(response){
-            localStorage.removeItem('_token')
-            navigateTo('/login')
-        }
-        }
-    catch(error){
-        state.errors = error.response
-        console.log('error', error)
-    }
-    }
 </script>
 
 <style>
