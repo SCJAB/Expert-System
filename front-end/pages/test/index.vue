@@ -1,12 +1,12 @@
 <template>
-  <div class="flex justify-center items-center h-screen text-3xl bg-test fade-in relative">
+  <div class="flex justify-center items-center h-screen text-3xl bg-test fade-in relative" @keydown.left="prevQuestion" @keydown.right="nextQuestion" tabindex="0" @keydown.enter="submitAnswers">
     <div class="w-8/12 px-10 py-5 bg-black bg-opacity-50 rounded-2xl">
       <div class="carousel-container">
         <div v-for="(question, index) in questions" :key="question.id" :class="{ 'hidden': currentQuestionIndex !== index }" class="carousel-slide font-bold text-[#ffc599]">
           {{ question.question }}
           <ul>
             <p class="font-light text-xl text-white" v-for="option in question.options" :key="option.id">
-              <label>
+              <label :class="{ 'text-yellow-500': selectedOptions[question.id] === option.id }">
                 <input type="radio" :name="'question_' + question.id" :value="option.id" v-model="selectedOptions[question.id]">
                 {{ option.option }}
               </label>
