@@ -1,7 +1,9 @@
 <template>
-    <div>
-      <p>Takers List</p>
-  
+  <div>
+    <p>Admins List</p>
+    <button class="action-btn create" @click="create()">Create</button>
+
+    <template v-if="data.admins.length > 0">
       <table>
         <thead>
           <tr>
@@ -13,57 +15,79 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="t in data.admins" :key="t.id">
-            <td>
-              <nuxt-link :to="'/admins/' + t.id">{{ `${t.first_name} ${t.last_name}` }}</nuxt-link>
-            </td>
-            <td>{{ t.age }}</td>
-            <td>{{ t.email }}</td>
-            <td>{{ t.is_verified ? 'Verified' : 'Not Verified' }}</td>
-            <td>
-              <button class="action-btn view" @click="viewTaker(t.id)">View</button>
-              <button class="action-btn edit" @click="editTaker(t.id)">Edit</button>
-              <button class="action-btn delete" @click="deleteTaker(t.id)">Delete</button>
-            </td>
-          </tr>
+          <template v-for="t in data.admins" :key="t.id">
+            <tr v-if="t.id !== 1">
+              <td>{{ `${t.first_name} ${t.last_name}` }}</td>
+              <td>{{ t.age }}</td>
+              <td>{{ t.email }}</td>
+              <td>{{ t.is_verified ? 'Verified' : 'Not Verified' }}</td>
+              <td>
+                <button class="action-btn view" @click="view(t.id)">View</button>
+                <button class="action-btn edit" @click="edit(t.id)">Edit</button>
+                <button class="action-btn delete" @click="deleteAdmin(t.id)">Delete</button>
+              </td>
+            </tr>
+          </template>
         </tbody>
       </table>
-    </div>
-  </template>
+    </template>
+
+    <template v-else>
+      <p>No admins available.</p>
+    </template>
+  </div>
+</template>
+
+<script>
+export default { 
+  async setup() {
+    try {
+      const { data } = await useFetch('http://127.0.0.1:8000/api/admins/');
+    
+      definePageMeta({
+        layout: 'admin-layout',
+      }); 
+    
+      return { data };
+    } catch (error) {
+      console.error('Error fetching admins:', error);
+    }
+  },
   
-  <script>
-  export default {
-    async setup() {
-      const data = ref(null);
+  methods: {
+    view(adminId) {
+      this.$router.push(`/admin/admins/${adminId}`);
+    },
 
-      // Check if user is logged in on component mount
-      onMounted(() => {
-        checkLogged();
-      });
+    edit(adminId) {
+      this.$router.push(`/admin/admins/edit/${adminId}`);
+    },
 
-      async function checkLogged() {
-        if (!localStorage.getItem('_token')) {
-          navigateTo('../admin/login');
-        }
-      }
+    create() {
+      this.$router.push(`/admin/admins/create`);
+    },
+
+    async deleteAdmin(adminId) {
       try {
-        const { data } = await useFetch('http://127.0.0.1:8000/api/admins/');
-  
-        definePageMeta({
-          layout: 'admin-layout',
-        }); 
-  
-        return { data };
+        const response = await fetch(`http://127.0.0.1:8000/api/admins/${adminId}/delete`, {
+          method: 'DELETE',
+        });
+
+        if (response.ok) {
+          alert('Deleted Succesfully');
+          window.location.reload();
+        } else {
+          console.error('Failed to delete administrator:', response.statusText);
+        }
       } catch (error) {
-        console.error('Error fetching takers:', error);
-        // You might want to handle errors more gracefully, for example by showing an error message to the user
+        console.error('Error deleting administrator:', error);
       }
     },
+  },
 };
-  </script>
+</script>
   
 <style>
-  /* Add your table styles here if needed */
   table {
     width: 100%;
     border-collapse: collapse;
@@ -96,6 +120,12 @@
   .edit {
     background-color: yellow;
     color: #333;
+  }
+
+  .create {
+    margin-top: 10px;
+    background-color: blue;
+    color: white;
   }
 
   .delete {

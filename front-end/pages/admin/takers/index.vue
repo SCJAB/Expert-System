@@ -1,7 +1,7 @@
 <template>
     <div>
       <p>Takers List</p>
-  
+      <button class="action-btn create" @click="create()">Create</button>
       <table>
         <thead>
           <tr>
@@ -14,15 +14,13 @@
         </thead>
         <tbody>
           <tr v-for="t in data.takers" :key="t.id">
-            <td>
-              <nuxt-link :to="'/takers/' + t.id">{{ `${t.first_name} ${t.last_name}` }}</nuxt-link>
-            </td>
+            <td>{{ `${t.first_name} ${t.last_name}` }}</td>
             <td>{{ t.age }}</td>
             <td>{{ t.email }}</td>
             <td>{{ t.is_verified ? 'Verified' : 'Not Verified' }}</td>
             <td>
-              <button class="action-btn view" @click="viewTaker(t.id)">View</button>
-              <button class="action-btn edit" @click="editTaker(t.id)">Edit</button>
+              <button class="action-btn view" @click="view(t.id)">View</button>
+              <button class="action-btn edit" @click="edit(t.id)">Edit</button>
               <button class="action-btn delete" @click="deleteTaker(t.id)">Delete</button>
             </td>
           </tr>
@@ -44,15 +42,44 @@
         return { data };
       } catch (error) {
         console.error('Error fetching takers:', error);
-        // You might want to handle errors more gracefully, for example by showing an error message to the user
       }
     },
-  
+
+    methods: {
+    view(takerID) {
+      this.$router.push(`/admin/takers/${takerID}`);
+    },
+
+    edit(adminId) {
+      this.$router.push(`/admin/takers/edit/${adminId}`);
+    },
+
+    create() {
+      this.$router.push(`/admin/takers/create`);
+    },
+
+    async deleteTaker(id) {
+      try {
+        const response = await fetch(`http://127.0.0.1:8000/api/takers/${id}/delete`, {
+          method: 'DELETE',
+        });
+
+        if (response.ok) {
+          alert('Deleted Succesfully');
+          window.location.reload();
+        } else {
+          console.error('Failed to delete taker:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error deleting taker:', error);
+      }
+    },
+  },
 };
+  
   </script>
   
 <style>
-  /* Add your table styles here if needed */
   table {
     width: 100%;
     border-collapse: collapse;

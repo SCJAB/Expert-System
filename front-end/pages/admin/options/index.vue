@@ -1,7 +1,6 @@
 <template>
   <div>
     <p>Options List</p>
-
     <table>
       <thead>
         <tr>
@@ -14,20 +13,18 @@
       </thead>
       <tbody>
         <tr v-for="t in data.options" :key="t.id">
-          <td>
-            <nuxt-link :to="'/options/' + t.id">{{ `${t.option}` }}</nuxt-link>
+          <td>{{ `${t.option}` }}
           </td>
           <td>
-              <nuxt-link :to="'/admins/' + t.id">{{ `${t.adminID}` }}</nuxt-link>
+              <nuxt-link class="admin-link" :to="'/admin/admins/' + t.id">{{ `${t.adminID}` }}</nuxt-link>
           </td>
           <td>
-              <nuxt-link :to="'/questions/' + t.id">{{ `${t.questionID}` }}</nuxt-link>
+              <nuxt-link class="admin-link" :to="'/admin/questions/' + t.id">{{ `${t.questionID}` }}</nuxt-link>
           </td>
           <td>{{ t.score }}</td>
           <td>
-            <button class="action-btn view" @click="viewTaker(t.id)">View</button>
-            <button class="action-btn edit" @click="editTaker(t.id)">Edit</button>
-            <button class="action-btn delete" @click="deleteTaker(t.id)">Delete</button>
+            <button class="action-btn view" @click="view(t.id)">View</button>
+            <button class="action-btn edit" @click="edit(t.id)">Edit</button>
           </td>
         </tr>
       </tbody>
@@ -52,10 +49,25 @@ export default {
     }
   },
 
+  methods: {
+    view(id) {
+      this.$router.push(`/admin/options/${id}`);
+    },
+
+    edit(id) {
+      this.$router.push(`/admin/options/edit/${id}`);
+    },
+  },
 };
 </script>
 
 <style>
+.admin-link {
+    color: blue; 
+    cursor: pointer; 
+    text-decoration: underline; 
+    text-align: center;
+  }
 /* Add your table styles here if needed */
 table {
   width: 100%;
